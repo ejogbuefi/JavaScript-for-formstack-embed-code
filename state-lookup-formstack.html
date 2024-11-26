@@ -1,0 +1,22 @@
+<script>
+    const observer = new MutationObserver(() => {
+        if (document.querySelector('#field176492707-mui')) {
+            var stateDropdown = document.querySelector('#field176492707-mui');
+            var nextField = document.querySelector('#field177486245');
+            
+            var selectedState = stateDropdown.value;
+            var selectedURL = document.querySelector('#field176492707').value;
+
+            nextField.value = selectedURL;
+            
+            const newChild = document.createElement('a');  
+            newChild.href = selectedURL;
+            newChild.textContent = selectedURL;
+            newChild.target = "_blank";
+    
+            document.querySelector("#label-field177581511").appendChild(newChild);
+        }
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: true });
+</script>   

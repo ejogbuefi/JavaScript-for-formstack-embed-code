@@ -1,0 +1,28 @@
+<script>
+const observer = new MutationObserver(() => {
+    if (document.querySelector('#field176492707-mui')) {
+        var stateDropdown = document.querySelector('#field176492707-mui');
+        var nextField = document.querySelector('#field177486245');
+        
+        // Listen for changes in the state dropdown
+        stateDropdown.addEventListener('input', function () {
+            var selectedState = stateDropdown.value;
+            
+            // Call Google Sheets API
+            fetch(`https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec?state=${selectedState}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.result) {
+                        nextField.value = data.result; // Autofill the next field
+                    } else {
+                        nextField.value = ''; // Clear the field if no match
+                    }
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        });
+        
+    }
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+</script>
