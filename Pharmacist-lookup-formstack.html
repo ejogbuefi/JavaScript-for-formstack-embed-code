@@ -1,0 +1,34 @@
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const stateDropdown = document.querySelector("#stateDropdown"); // Replace with your dropdown ID
+    const resultContainer = document.querySelector("#resultContainer"); // Replace with your container ID
+
+    stateDropdown.addEventListener("change", function() {
+        const selectedState = this.value;
+
+        if (selectedState) {
+            fetchStateData(selectedState);
+        }
+    });
+
+    function fetchStateData(state) {
+        const endpoint = "YOUR_APPS_SCRIPT_URL"; // Replace with your Apps Script URL
+
+        fetch(`${endpoint}?state=${encodeURIComponent(state)}`)
+            .then(response => response.json())
+            .then(data => {
+                displayValues(data);
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                resultContainer.innerHTML = "Error loading data.";
+            });
+    }
+
+    function displayValues(values) {
+        resultContainer.innerHTML = values
+            .map(value => `<p>${value}</p>`)
+            .join("");
+    }
+});
+</script>

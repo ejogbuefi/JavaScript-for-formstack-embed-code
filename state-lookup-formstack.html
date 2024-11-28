@@ -9,14 +9,66 @@
 
             nextField.value = selectedURL;
             
+            document.querySelector("#label-field177581511 a").remove();
             const newChild = document.createElement('a');  
             newChild.href = selectedURL;
             newChild.textContent = selectedURL;
             newChild.target = "_blank";
-    
+            newChild.style = "color: red;";
+
             document.querySelector("#label-field177581511").appendChild(newChild);
         }
     });
     
-    observer.observe(document.body, { childList: true, subtree: true });
-</script>   
+    observer.observe(document.querySelector('#field176492707-mui'), { attributes: true, attributeFilter: ['value'] });
+</script>
+
+<script>
+    const secondobserver = new MutationObserver(() => {
+        if (document.querySelector('#field177486223-mui')) {
+            var stateDropdown = document.querySelector('#field177486223-mui');
+            var nextField = document.querySelector('#field177486271');
+            
+            var selectedState = stateDropdown.value;
+            var selectedURL = document.querySelector('#field177486223').value;
+
+            nextField.value = selectedURL;
+            
+            document.querySelector("#label-field177625471 a").remove();
+            const newChild = document.createElement('a');  
+            newChild.href = selectedURL;
+            newChild.textContent = selectedURL;
+            newChild.target = "_blank";
+            newChild.style = "color: red;";
+
+            document.querySelector("#label-field177625471").appendChild(newChild);
+        }
+    });
+    
+    secondobserver.observe(document.querySelector('#field177486223-mui'), { attributes: true, attributeFilter: ['value'] });
+</script>
+
+<script>
+    const thirdobserver = new MutationObserver(() => {
+        if (document.querySelector('#field177625538-mui')) {
+            var stateDropdown = document.querySelector('#field177625538-mui');
+            var nextField = document.querySelector('#field177625540');
+            
+            var selectedState = stateDropdown.value;
+            var selectedURL = document.querySelector('#field177625538').value;
+
+            nextField.value = selectedURL;
+            
+            document.querySelector("#label-field177625541 a").remove();
+            const newChild = document.createElement('a');  
+            newChild.href = selectedURL;
+            newChild.textContent = selectedURL;
+            newChild.target = "_blank";
+            newChild.style = "color: red;";
+
+            document.querySelector("#label-field177625541").appendChild(newChild);
+        }
+    });
+    
+    thirdobserver.observe(document.querySelector('#field177625538-mui'), { attributes: true, attributeFilter: ['value'] });
+</script>
