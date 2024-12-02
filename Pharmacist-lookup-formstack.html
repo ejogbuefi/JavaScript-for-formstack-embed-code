@@ -1,34 +1,364 @@
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const stateDropdown = document.querySelector("#stateDropdown"); // Replace with your dropdown ID
-    const resultContainer = document.querySelector("#resultContainer"); // Replace with your container ID
+    const observer4 = new MutationObserver(() => {
+        const stateDropdown = document.querySelector('#field177112055-mui');
+        const dynamicSelect1 = document.querySelector("#label-field175918209 select"); // Dropdown for 1st column
+        const dynamicTextarea4 = document.querySelector("#label-field175918213 textarea"); // Textarea for 4th column
+        const dynamicTextarea5 = document.querySelector("#label-field175918214 textarea"); // Textarea for 5th column
+    
+        if (stateDropdown) {
+            const selectedState = stateDropdown.value;
+    
+            if (selectedState) {
+                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the first column values into the dropdown
+                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                    })
+                    .catch(error => console.error('Error fetching state data:', error));
+            }
+    
+            // Trigger when an option is selected in the dynamic select
+            dynamicSelect1.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect1);
+    
+                if (selectedValues.length > 0) {
+                    // Fetch state data again to find the corresponding row for the selected options
+                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicTextarea4.value = "";
+                            dynamicTextarea4.setAttribute("disabled", true);
+                            dynamicTextarea5.value = "";
+                            dynamicTextarea5.setAttribute("disabled", true);
 
-    stateDropdown.addEventListener("change", function() {
-        const selectedState = this.value;
-
-        if (selectedState) {
-            fetchStateData(selectedState);
-        }
-    });
-
-    function fetchStateData(state) {
-        const endpoint = "YOUR_APPS_SCRIPT_URL"; // Replace with your Apps Script URL
-
-        fetch(`${endpoint}?state=${encodeURIComponent(state)}`)
-            .then(response => response.json())
-            .then(data => {
-                displayValues(data);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-                resultContainer.innerHTML = "Error loading data.";
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    // Append the 4th and 5th column values into textareas
+                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
+                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                }
             });
-    }
+        }
+    
+        // Function to get all selected values
+        function getSelectedValues(select) {
+            // Use Array.from to convert the selected options into an array
+            return Array.from(select.selectedOptions).map(option => option.value.trim());
+        }
+    
+        // Function to populate a select element with options
+        function populateSelectOptions(selectElement, optionsArray) {
+            // Clear existing options
+            selectElement.innerHTML = "";
+    
+            // Add a default "Select an option" placeholder
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "--Select an option--";
+            selectElement.appendChild(defaultOption);
+    
+            // Populate new options from the array
+            optionsArray.forEach(optionText => {
+                const optionElement = document.createElement("option");
+                optionElement.value = optionText; // Set the option value
+                optionElement.textContent = optionText; // Set the display text
+                selectElement.appendChild(optionElement);
+            });
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString); // Convert the string to a Date object
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (0-indexed, add 1)
+            const day = date.getDate().toString().padStart(2, '0'); // Get day
+            const year = date.getFullYear(); // Get full year
+            return `${month}/${day}/${year}`; // Format as MM/DD/YYYY
+        }
 
-    function displayValues(values) {
-        resultContainer.innerHTML = values
-            .map(value => `<p>${value}</p>`)
-            .join("");
-    }
-});
+    });
+    observer4.observe(document.querySelector('#field177112055-mui'), { attributes: true, attributeFilter: ['value'] });
+</script>
+<script>
+    const observer5 = new MutationObserver(() => {
+        const stateDropdown = document.querySelector('#field177679482-mui');
+        const dynamicSelect1 = document.querySelector("#label-field177679484 select"); // Dropdown for 1st column
+        const dynamicTextarea4 = document.querySelector("#label-field177679485 textarea"); // Textarea for 4th column
+        const dynamicTextarea5 = document.querySelector("#label-field177679486 textarea"); // Textarea for 5th column
+    
+        if (stateDropdown) {
+            const selectedState = stateDropdown.value;
+    
+            if (selectedState) {
+                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the first column values into the dropdown
+                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                    })
+                    .catch(error => console.error('Error fetching state data:', error));
+            }
+    
+            // Trigger when an option is selected in the dynamic select
+            dynamicSelect1.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect1);
+    
+                if (selectedValues.length > 0) {
+                    // Fetch state data again to find the corresponding row for the selected options
+                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicTextarea4.value = "";
+                            dynamicTextarea4.setAttribute("disabled", true);
+                            dynamicTextarea5.value = "";
+                            dynamicTextarea5.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    // Append the 4th and 5th column values into textareas
+                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
+                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                }
+            });
+        }
+    
+        // Function to get all selected values
+        function getSelectedValues(select) {
+            // Use Array.from to convert the selected options into an array
+            return Array.from(select.selectedOptions).map(option => option.value.trim());
+        }
+    
+        // Function to populate a select element with options
+        function populateSelectOptions(selectElement, optionsArray) {
+            // Clear existing options
+            selectElement.innerHTML = "";
+    
+            // Add a default "Select an option" placeholder
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "--Select an option--";
+            selectElement.appendChild(defaultOption);
+    
+            // Populate new options from the array
+            optionsArray.forEach(optionText => {
+                const optionElement = document.createElement("option");
+                optionElement.value = optionText; // Set the option value
+                optionElement.textContent = optionText; // Set the display text
+                selectElement.appendChild(optionElement);
+            });
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString); // Convert the string to a Date object
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (0-indexed, add 1)
+            const day = date.getDate().toString().padStart(2, '0'); // Get day
+            const year = date.getFullYear(); // Get full year
+            return `${month}/${day}/${year}`; // Format as MM/DD/YYYY
+        }
+
+    });
+    observer5.observe(document.querySelector('#field177679482-mui'), { attributes: true, attributeFilter: ['value'] });
+</script>
+<script>
+    const observer6 = new MutationObserver(() => {
+        const stateDropdown = document.querySelector('#field177679498-mui');
+        const dynamicSelect1 = document.querySelector("#label-field177679500 select"); // Dropdown for 1st column
+        const dynamicTextarea4 = document.querySelector("#label-field177679501 textarea"); // Textarea for 4th column
+        const dynamicTextarea5 = document.querySelector("#label-field177679502 textarea"); // Textarea for 5th column
+    
+        if (stateDropdown) {
+            const selectedState = stateDropdown.value;
+    
+            if (selectedState) {
+                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the first column values into the dropdown
+                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                    })
+                    .catch(error => console.error('Error fetching state data:', error));
+            }
+    
+            // Trigger when an option is selected in the dynamic select
+            dynamicSelect1.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect1);
+    
+                if (selectedValues.length > 0) {
+                    // Fetch state data again to find the corresponding row for the selected options
+                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicTextarea4.value = "";
+                            dynamicTextarea4.setAttribute("disabled", true);
+                            dynamicTextarea5.value = "";
+                            dynamicTextarea5.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    // Append the 4th and 5th column values into textareas
+                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
+                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                }
+            });
+        }
+    
+        // Function to get all selected values
+        function getSelectedValues(select) {
+            // Use Array.from to convert the selected options into an array
+            return Array.from(select.selectedOptions).map(option => option.value.trim());
+        }
+    
+        // Function to populate a select element with options
+        function populateSelectOptions(selectElement, optionsArray) {
+            // Clear existing options
+            selectElement.innerHTML = "";
+    
+            // Add a default "Select an option" placeholder
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "--Select an option--";
+            selectElement.appendChild(defaultOption);
+    
+            // Populate new options from the array
+            optionsArray.forEach(optionText => {
+                const optionElement = document.createElement("option");
+                optionElement.value = optionText; // Set the option value
+                optionElement.textContent = optionText; // Set the display text
+                selectElement.appendChild(optionElement);
+            });
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString); // Convert the string to a Date object
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (0-indexed, add 1)
+            const day = date.getDate().toString().padStart(2, '0'); // Get day
+            const year = date.getFullYear(); // Get full year
+            return `${month}/${day}/${year}`; // Format as MM/DD/YYYY
+        }
+
+    });
+    observer6.observe(document.querySelector('#field177679498-mui'), { attributes: true, attributeFilter: ['value'] });
+</script>
+<script>
+    const observer7 = new MutationObserver(() => {
+        const stateDropdown = document.querySelector('#field177680024-mui');
+        const dynamicSelect1 = document.querySelector("#label-field177680026 select"); // Dropdown for 1st column
+        const dynamicTextarea4 = document.querySelector("#label-field177680027 textarea"); // Textarea for 4th column
+        const dynamicTextarea5 = document.querySelector("#label-field177680028 textarea"); // Textarea for 5th column
+    
+        if (stateDropdown) {
+            const selectedState = stateDropdown.value;
+    
+            if (selectedState) {
+                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Populate the first column values into the dropdown
+                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                    })
+                    .catch(error => console.error('Error fetching state data:', error));
+            }
+    
+            // Trigger when an option is selected in the dynamic select
+            dynamicSelect1.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect1);
+    
+                if (selectedValues.length > 0) {
+                    // Fetch state data again to find the corresponding row for the selected options
+                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicTextarea4.value = "";
+                            dynamicTextarea4.setAttribute("disabled", true);
+                            dynamicTextarea5.value = "";
+                            dynamicTextarea5.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    // Append the 4th and 5th column values into textareas
+                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
+                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                }
+            });
+        }
+    
+        // Function to get all selected values
+        function getSelectedValues(select) {
+            // Use Array.from to convert the selected options into an array
+            return Array.from(select.selectedOptions).map(option => option.value.trim());
+        }
+    
+        // Function to populate a select element with options
+        function populateSelectOptions(selectElement, optionsArray) {
+            // Clear existing options
+            selectElement.innerHTML = "";
+    
+            // Add a default "Select an option" placeholder
+            const defaultOption = document.createElement("option");
+            defaultOption.value = "";
+            defaultOption.textContent = "--Select an option--";
+            selectElement.appendChild(defaultOption);
+    
+            // Populate new options from the array
+            optionsArray.forEach(optionText => {
+                const optionElement = document.createElement("option");
+                optionElement.value = optionText; // Set the option value
+                optionElement.textContent = optionText; // Set the display text
+                selectElement.appendChild(optionElement);
+            });
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString); // Convert the string to a Date object
+            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (0-indexed, add 1)
+            const day = date.getDate().toString().padStart(2, '0'); // Get day
+            const year = date.getFullYear(); // Get full year
+            return `${month}/${day}/${year}`; // Format as MM/DD/YYYY
+        }
+
+    });
+    observer7.observe(document.querySelector('#field177680024-mui'), { attributes: true, attributeFilter: ['value'] });
 </script>
