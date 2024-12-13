@@ -1,15 +1,20 @@
 <script>
     const observer4 = new MutationObserver(() => {
         const stateDropdown = document.querySelector('#field177112055-mui');
-        const dynamicSelect1 = document.querySelector("#label-field175918209 select"); // Dropdown for 1st column
-        const dynamicTextarea4 = document.querySelector("#label-field175918213 textarea"); // Textarea for 4th column
-        const dynamicTextarea5 = document.querySelector("#label-field175918214 textarea"); // Textarea for 5th column
+        const dynamicSelect1 = document.querySelector("#label-field175918209 select"); // Pharmacy Name 
+        const dynamicPharmacistName1 = document.querySelector("#label-field175918216 textarea"); // Pharmacist Name
+        const dynamicPharmacistLicenseNumber1 = document.querySelector("#label-field177115527 textarea"); // Pharmacist License Number
+        const dynamicPharmacistLicenseExpiration1 = document.querySelector("#label-field175918218 textarea"); // Pharmacist License Expiration
     
+        const dynamicPharmacyLicenseNumber1 = document.querySelector("#label-field175918213 textarea"); // Pharmacy License Numbers
+        const dynamicPharmacyLicenseExpiration1 = document.querySelector("#label-field175918214 textarea"); // Pharmacy License Expiration
+        const dynamicPharmacyWebsiteLinks1 = document.querySelector("#label-field177115035 textarea"); // Pharmacy Website Links
+
         if (stateDropdown) {
             const selectedState = stateDropdown.value;
     
             if (selectedState) {
-                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                     .then(response => response.json())
                     .then(data => {
                         // Populate the first column values into the dropdown
@@ -24,29 +29,104 @@
     
                 if (selectedValues.length > 0) {
                     // Fetch state data again to find the corresponding row for the selected options
-                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                         .then(response => response.json())
                         .then(data => {
                             // Clear the textareas first
-                            dynamicTextarea4.value = "";
-                            dynamicTextarea4.setAttribute("disabled", true);
-                            dynamicTextarea5.value = "";
-                            dynamicTextarea5.setAttribute("disabled", true);
+                            dynamicPharmacistName1.value = "";
+                            dynamicPharmacistName1.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseNumber1.value = "";
+                            dynamicPharmacistLicenseNumber1.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseExpiration1.value = "";
+                            dynamicPharmacistLicenseExpiration1.setAttribute("disabled", true);
 
                             // Iterate over selected values
                             selectedValues.forEach(selectedValue => {
                                 const selectedRow = data.find(row => row[0] === selectedValue);
     
                                 if (selectedRow) {
-                                    // Append the 4th and 5th column values into textareas
-                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
-                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                    if (selectedRow[1]){
+                                        dynamicPharmacistName1.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistName1.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacistLicenseNumber1.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseNumber1.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[3]){
+                                        dynamicPharmacistLicenseExpiration1.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseExpiration1.value += `NaN\n`; // Append with a newline
+                                    }
                                 }
                             });
     
                             // Trim trailing newlines
-                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
-                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                            dynamicPharmacistName1.value = dynamicPharmacistName1.value.trim();
+                            dynamicPharmacistLicenseNumber1.value = dynamicPharmacistLicenseNumber1.value.trim();
+                            dynamicPharmacistLicenseExpiration1.value = dynamicPharmacistLicenseExpiration1.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                    
+                    fetch(`https://script.google.com/macros/s/AKfycbxb2u3W5O1PUVT67FqPzLq2wetdhdbPXtZtAl_SyX9-sGeFSGy_RP-jPHQ93sDbx5pz/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicPharmacyLicenseNumber1.value = "";
+                            dynamicPharmacyLicenseNumber1.setAttribute("disabled", true);
+                            dynamicPharmacyLicenseExpiration1.value = "";
+                            dynamicPharmacyLicenseExpiration1.setAttribute("disabled", true);
+                            dynamicPharmacyWebsiteLinks1.value = "";
+                            dynamicPharmacyWebsiteLinks1.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    if (selectedRow[1]){
+                                        dynamicPharmacyWebsiteLinks1.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyWebsiteLinks1.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacyLicenseNumber1.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber1.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[4]){
+                                        dynamicPharmacyLicenseNumber1.value += `${selectedRow[4]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber1.value += `NaN\n`; // Append with a newline
+                                    }
+
+                                    if (selectedRow[3]){
+                                        dynamicPharmacyLicenseExpiration1.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration1.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[5]){
+                                        dynamicPharmacyLicenseExpiration1.value += `${formatDate(selectedRow[5])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration1.value += `NaN\n`; // Append with a newline
+                                    }
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicPharmacyWebsiteLinks1.value = dynamicPharmacyWebsiteLinks1.value.trim();
+                            dynamicPharmacyLicenseNumber1.value = dynamicPharmacyLicenseNumber1.value.trim();
+                            dynamicPharmacyLicenseExpiration1.value = dynamicPharmacyLicenseExpiration1.value.trim();
                         })
                         .catch(error => console.error('Error fetching row data:', error));
                 }
@@ -92,52 +172,133 @@
 <script>
     const observer5 = new MutationObserver(() => {
         const stateDropdown = document.querySelector('#field177679482-mui');
-        const dynamicSelect1 = document.querySelector("#label-field177679484 select"); // Dropdown for 1st column
-        const dynamicTextarea4 = document.querySelector("#label-field177679485 textarea"); // Textarea for 4th column
-        const dynamicTextarea5 = document.querySelector("#label-field177679486 textarea"); // Textarea for 5th column
-    
+        const dynamicSelect2 = document.querySelector("#label-field177679484 select"); // Dropdown for 1st column
+        const dynamicPharmacistName2 = document.querySelector("#label-field177679487 textarea"); // Textarea for 4th column
+        const dynamicPharmacistLicenseNumber2 = document.querySelector("#label-field177679488 textarea"); // Textarea for 5th column
+        const dynamicPharmacistLicenseExpiration2 = document.querySelector("#label-field177679489 textarea"); // Textarea for 5th column
+
+        const dynamicPharmacyLicenseNumber2 = document.querySelector("#label-field177679485 textarea"); // Pharmacy License Numbers
+        const dynamicPharmacyLicenseExpiration2 = document.querySelector("#label-field177679486 textarea"); // Pharmacy License Expiration
+        const dynamicPharmacyWebsiteLinks2 = document.querySelector("#label-field177679490 textarea"); // Pharmacy Website Links
+
+
         if (stateDropdown) {
             const selectedState = stateDropdown.value;
     
             if (selectedState) {
-                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
-                    .then(response => response.json())
+                fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
+                .then(response => response.json())
                     .then(data => {
                         // Populate the first column values into the dropdown
-                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                        populateSelectOptions(dynamicSelect2, data.map(row => row[0]));
                     })
                     .catch(error => console.error('Error fetching state data:', error));
             }
     
             // Trigger when an option is selected in the dynamic select
-            dynamicSelect1.addEventListener("change", () => {
-                const selectedValues = getSelectedValues(dynamicSelect1);
+            dynamicSelect2.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect2);
     
                 if (selectedValues.length > 0) {
                     // Fetch state data again to find the corresponding row for the selected options
-                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                         .then(response => response.json())
                         .then(data => {
                             // Clear the textareas first
-                            dynamicTextarea4.value = "";
-                            dynamicTextarea4.setAttribute("disabled", true);
-                            dynamicTextarea5.value = "";
-                            dynamicTextarea5.setAttribute("disabled", true);
+                            dynamicPharmacistName2.value = "";
+                            dynamicPharmacistName2.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseNumber2.value = "";
+                            dynamicPharmacistLicenseNumber2.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseExpiration2.value = "";
+                            dynamicPharmacistLicenseExpiration2.setAttribute("disabled", true);
 
                             // Iterate over selected values
                             selectedValues.forEach(selectedValue => {
                                 const selectedRow = data.find(row => row[0] === selectedValue);
     
                                 if (selectedRow) {
-                                    // Append the 4th and 5th column values into textareas
-                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
-                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                    if (selectedRow[1]){
+                                        dynamicPharmacistName2.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistName2.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacistLicenseNumber2.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseNumber2.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[3]){
+                                        dynamicPharmacistLicenseExpiration2.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseExpiration2.value += `NaN\n`; // Append with a newline
+                                    }
                                 }
                             });
     
                             // Trim trailing newlines
-                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
-                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                            dynamicPharmacistName2.value = dynamicPharmacistName2.value.trim();
+                            dynamicPharmacistLicenseNumber2.value = dynamicPharmacistLicenseNumber2.value.trim();
+                            dynamicPharmacistLicenseExpiration2.value = dynamicPharmacistLicenseExpiration2.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                    
+                    fetch(`https://script.google.com/macros/s/AKfycbxb2u3W5O1PUVT67FqPzLq2wetdhdbPXtZtAl_SyX9-sGeFSGy_RP-jPHQ93sDbx5pz/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicPharmacyLicenseNumber2.value = "";
+                            dynamicPharmacyLicenseNumber2.setAttribute("disabled", true);
+                            dynamicPharmacyLicenseExpiration2.value = "";
+                            dynamicPharmacyLicenseExpiration2.setAttribute("disabled", true);
+                            dynamicPharmacyWebsiteLinks2.value = "";
+                            dynamicPharmacyWebsiteLinks2.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    if (selectedRow[1]){
+                                        dynamicPharmacyWebsiteLinks2.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyWebsiteLinks2.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacyLicenseNumber2.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber2.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[4]){
+                                        dynamicPharmacyLicenseNumber2.value += `${selectedRow[4]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber2.value += `NaN\n`; // Append with a newline
+                                    }
+
+                                    if (selectedRow[3]){
+                                        dynamicPharmacyLicenseExpiration2.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration2.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[5]){
+                                        dynamicPharmacyLicenseExpiration2.value += `${formatDate(selectedRow[5])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration2.value += `NaN\n`; // Append with a newline
+                                    }
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicPharmacyWebsiteLinks2.value = dynamicPharmacyWebsiteLinks2.value.trim();
+                            dynamicPharmacyLicenseNumber2.value = dynamicPharmacyLicenseNumber2.value.trim();
+                            dynamicPharmacyLicenseExpiration2.value = dynamicPharmacyLicenseExpiration2.value.trim();
                         })
                         .catch(error => console.error('Error fetching row data:', error));
                 }
@@ -183,52 +344,132 @@
 <script>
     const observer6 = new MutationObserver(() => {
         const stateDropdown = document.querySelector('#field177679498-mui');
-        const dynamicSelect1 = document.querySelector("#label-field177679500 select"); // Dropdown for 1st column
-        const dynamicTextarea4 = document.querySelector("#label-field177679501 textarea"); // Textarea for 4th column
-        const dynamicTextarea5 = document.querySelector("#label-field177679502 textarea"); // Textarea for 5th column
+        const dynamicSelect3 = document.querySelector("#label-field177679500 select"); // Dropdown for 1st column
+        const dynamicPharmacistName3 = document.querySelector("#label-field177679503 textarea"); // Pharmacist Name
+        const dynamicPharmacistLicenseNumber3 = document.querySelector("#label-field177679504 textarea"); // Pharmacist License Number
+        const dynamicPharmacistLicenseExpiration3 = document.querySelector("#label-field177679505 textarea"); // Pharmacist License Expiration
+    
+        const dynamicPharmacyLicenseNumber3 = document.querySelector("#label-field177679501 textarea"); // Pharmacy License Numbers
+        const dynamicPharmacyLicenseExpiration3 = document.querySelector("#label-field177679502 textarea"); // Pharmacy License Expiration
+        const dynamicPharmacyWebsiteLinks3 = document.querySelector("#label-field177679506 textarea"); // Pharmacy Website Links
     
         if (stateDropdown) {
             const selectedState = stateDropdown.value;
     
             if (selectedState) {
-                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                     .then(response => response.json())
                     .then(data => {
                         // Populate the first column values into the dropdown
-                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                        populateSelectOptions(dynamicSelect3, data.map(row => row[0]));
                     })
                     .catch(error => console.error('Error fetching state data:', error));
             }
     
             // Trigger when an option is selected in the dynamic select
-            dynamicSelect1.addEventListener("change", () => {
-                const selectedValues = getSelectedValues(dynamicSelect1);
+            dynamicSelect3.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect3);
     
                 if (selectedValues.length > 0) {
                     // Fetch state data again to find the corresponding row for the selected options
-                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                         .then(response => response.json())
                         .then(data => {
                             // Clear the textareas first
-                            dynamicTextarea4.value = "";
-                            dynamicTextarea4.setAttribute("disabled", true);
-                            dynamicTextarea5.value = "";
-                            dynamicTextarea5.setAttribute("disabled", true);
+                            dynamicPharmacistName3.value = "";
+                            dynamicPharmacistName3.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseNumber3.value = "";
+                            dynamicPharmacistLicenseNumber3.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseExpiration3.value = "";
+                            dynamicPharmacistLicenseExpiration3.setAttribute("disabled", true);
 
                             // Iterate over selected values
                             selectedValues.forEach(selectedValue => {
                                 const selectedRow = data.find(row => row[0] === selectedValue);
     
                                 if (selectedRow) {
-                                    // Append the 4th and 5th column values into textareas
-                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
-                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                    if (selectedRow[1]){
+                                        dynamicPharmacistName3.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistName3.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacistLicenseNumber3.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseNumber3.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[3]){
+                                        dynamicPharmacistLicenseExpiration3.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseExpiration3.value += `NaN\n`; // Append with a newline
+                                    }
                                 }
                             });
     
                             // Trim trailing newlines
-                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
-                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                            dynamicPharmacistName3.value = dynamicPharmacistName3.value.trim();
+                            dynamicPharmacistLicenseNumber3.value = dynamicPharmacistLicenseNumber3.value.trim();
+                            dynamicPharmacistLicenseExpiration3.value = dynamicPharmacistLicenseExpiration3.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                    
+                    fetch(`https://script.google.com/macros/s/AKfycbxb2u3W5O1PUVT67FqPzLq2wetdhdbPXtZtAl_SyX9-sGeFSGy_RP-jPHQ93sDbx5pz/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicPharmacyLicenseNumber3.value = "";
+                            dynamicPharmacyLicenseNumber3.setAttribute("disabled", true);
+                            dynamicPharmacyLicenseExpiration3.value = "";
+                            dynamicPharmacyLicenseExpiration3.setAttribute("disabled", true);
+                            dynamicPharmacyWebsiteLinks3.value = "";
+                            dynamicPharmacyWebsiteLinks3.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    if (selectedRow[1]){
+                                        dynamicPharmacyWebsiteLinks3.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyWebsiteLinks3.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacyLicenseNumber3.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber3.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[4]){
+                                        dynamicPharmacyLicenseNumber3.value += `${selectedRow[4]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber3.value += `NaN\n`; // Append with a newline
+                                    }
+
+                                    if (selectedRow[3]){
+                                        dynamicPharmacyLicenseExpiration3.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration3.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[5]){
+                                        dynamicPharmacyLicenseExpiration3.value += `${formatDate(selectedRow[5])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration3.value += `NaN\n`; // Append with a newline
+                                    }
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicPharmacyWebsiteLinks3.value = dynamicPharmacyWebsiteLinks3.value.trim();
+                            dynamicPharmacyLicenseNumber3.value = dynamicPharmacyLicenseNumber3.value.trim();
+                            dynamicPharmacyLicenseExpiration3.value = dynamicPharmacyLicenseExpiration3.value.trim();
                         })
                         .catch(error => console.error('Error fetching row data:', error));
                 }
@@ -274,52 +515,132 @@
 <script>
     const observer7 = new MutationObserver(() => {
         const stateDropdown = document.querySelector('#field177680024-mui');
-        const dynamicSelect1 = document.querySelector("#label-field177680026 select"); // Dropdown for 1st column
-        const dynamicTextarea4 = document.querySelector("#label-field177680027 textarea"); // Textarea for 4th column
-        const dynamicTextarea5 = document.querySelector("#label-field177680028 textarea"); // Textarea for 5th column
+        const dynamicSelect4 = document.querySelector("#label-field177680026 select"); // Dropdown for 1st column
+        const dynamicPharmacistName4 = document.querySelector("#label-field177680029 textarea"); // Pharmacist Name
+        const dynamicPharmacistLicenseNumber4 = document.querySelector("#label-field177680030 textarea"); // Pharmacist License Number
+        const dynamicPharmacistLicenseExpiration4 = document.querySelector("#label-field177680031 textarea"); // Pharmacist License Expiration
+    
+        const dynamicPharmacyLicenseNumber4 = document.querySelector("#label-field177680027 textarea"); // Pharmacy License Numbers
+        const dynamicPharmacyLicenseExpiration4 = document.querySelector("#label-field177680028 textarea"); // Pharmacy License Expiration
+        const dynamicPharmacyWebsiteLinks4 = document.querySelector("#label-field177680032 textarea"); // Pharmacy Website Links
     
         if (stateDropdown) {
             const selectedState = stateDropdown.value;
     
             if (selectedState) {
-                fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                     .then(response => response.json())
                     .then(data => {
                         // Populate the first column values into the dropdown
-                        populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
+                        populateSelectOptions(dynamicSelect4, data.map(row => row[0]));
                     })
                     .catch(error => console.error('Error fetching state data:', error));
             }
     
             // Trigger when an option is selected in the dynamic select
-            dynamicSelect1.addEventListener("change", () => {
-                const selectedValues = getSelectedValues(dynamicSelect1);
+            dynamicSelect4.addEventListener("change", () => {
+                const selectedValues = getSelectedValues(dynamicSelect4);
     
                 if (selectedValues.length > 0) {
                     // Fetch state data again to find the corresponding row for the selected options
-                    fetch(`https://script.google.com/macros/s/AKfycbzQnnYXP1etLaBlPvmrnjCKNoaqojKwqyu9BICwHI_YW_kE-4-QwAy-ZniHpYuI02N5pw/exec?state=${selectedState}`)
+                    fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                         .then(response => response.json())
                         .then(data => {
                             // Clear the textareas first
-                            dynamicTextarea4.value = "";
-                            dynamicTextarea4.setAttribute("disabled", true);
-                            dynamicTextarea5.value = "";
-                            dynamicTextarea5.setAttribute("disabled", true);
+                            dynamicPharmacistName4.value = "";
+                            dynamicPharmacistName4.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseNumber4.value = "";
+                            dynamicPharmacistLicenseNumber4.setAttribute("disabled", true);
+                            dynamicPharmacistLicenseExpiration4.value = "";
+                            dynamicPharmacistLicenseExpiration4.setAttribute("disabled", true);
 
                             // Iterate over selected values
                             selectedValues.forEach(selectedValue => {
                                 const selectedRow = data.find(row => row[0] === selectedValue);
     
                                 if (selectedRow) {
-                                    // Append the 4th and 5th column values into textareas
-                                    dynamicTextarea4.value += `${selectedRow[1]}\n`; // Append with a newline
-                                    dynamicTextarea5.value += `${formatDate(selectedRow[2])}\n`;
+                                    if (selectedRow[1]){
+                                        dynamicPharmacistName4.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistName4.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacistLicenseNumber4.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseNumber4.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[3]){
+                                        dynamicPharmacistLicenseExpiration4.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacistLicenseExpiration4.value += `NaN\n`; // Append with a newline
+                                    }
                                 }
                             });
     
                             // Trim trailing newlines
-                            dynamicTextarea4.value = dynamicTextarea4.value.trim();
-                            dynamicTextarea5.value = dynamicTextarea5.value.trim();
+                            dynamicPharmacistName4.value = dynamicPharmacistName4.value.trim();
+                            dynamicPharmacistLicenseNumber4.value = dynamicPharmacistLicenseNumber4.value.trim();
+                            dynamicPharmacistLicenseExpiration4.value = dynamicPharmacistLicenseExpiration4.value.trim();
+                        })
+                        .catch(error => console.error('Error fetching row data:', error));
+                    
+                    fetch(`https://script.google.com/macros/s/AKfycbxb2u3W5O1PUVT67FqPzLq2wetdhdbPXtZtAl_SyX9-sGeFSGy_RP-jPHQ93sDbx5pz/exec?state=${selectedState}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Clear the textareas first
+                            dynamicPharmacyLicenseNumber4.value = "";
+                            dynamicPharmacyLicenseNumber4.setAttribute("disabled", true);
+                            dynamicPharmacyLicenseExpiration4.value = "";
+                            dynamicPharmacyLicenseExpiration4.setAttribute("disabled", true);
+                            dynamicPharmacyWebsiteLinks4.value = "";
+                            dynamicPharmacyWebsiteLinks4.setAttribute("disabled", true);
+
+                            // Iterate over selected values
+                            selectedValues.forEach(selectedValue => {
+                                const selectedRow = data.find(row => row[0] === selectedValue);
+    
+                                if (selectedRow) {
+                                    if (selectedRow[1]){
+                                        dynamicPharmacyWebsiteLinks4.value += `${selectedRow[1]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyWebsiteLinks4.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[2]){
+                                        dynamicPharmacyLicenseNumber4.value += `${selectedRow[2]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber4.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[4]){
+                                        dynamicPharmacyLicenseNumber4.value += `${selectedRow[4]}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseNumber4.value += `NaN\n`; // Append with a newline
+                                    }
+
+                                    if (selectedRow[3]){
+                                        dynamicPharmacyLicenseExpiration4.value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration4.value += `NaN\n`; // Append with a newline
+                                    }
+                                    if (selectedRow[5]){
+                                        dynamicPharmacyLicenseExpiration4.value += `${formatDate(selectedRow[5])}\n`; // Append with a newline
+                                    }
+                                    else{
+                                        dynamicPharmacyLicenseExpiration4.value += `NaN\n`; // Append with a newline
+                                    }
+                                }
+                            });
+    
+                            // Trim trailing newlines
+                            dynamicPharmacyWebsiteLinks4.value = dynamicPharmacyWebsiteLinks4.value.trim();
+                            dynamicPharmacyLicenseNumber4.value = dynamicPharmacyLicenseNumber4.value.trim();
+                            dynamicPharmacyLicenseExpiration4.value = dynamicPharmacyLicenseExpiration4.value.trim();
                         })
                         .catch(error => console.error('Error fetching row data:', error));
                 }
