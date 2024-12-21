@@ -1,74 +1,53 @@
 <script>
-    const observer = new MutationObserver(() => {
-        if (document.querySelector('#field176492707-mui')) {
-            var stateDropdown = document.querySelector('#field176492707-mui');
-            var nextField = document.querySelector('#field177486245');
-            
-            var selectedState = stateDropdown.value;
-            var selectedURL = document.querySelector('#field176492707').value;
+    var form = window.fsApi().getForm(5990093);
+    form.registerFormEventListener({
+        type: 'change',
+        onFormEvent: function (event) {
+        if (event.data.fieldId === '176492707') {
+            const source = form.getField('176492707');
+            const destination = form.getField('177581511');
 
-            nextField.value = selectedURL;
-            
-            document.querySelector("#label-field177581511 a").remove();
-            const newChild = document.createElement('a');  
-            newChild.href = selectedURL;
-            newChild.textContent = selectedURL;
-            newChild.target = "_blank";
-            newChild.style = "color: red;";
+            form.getField(177486245).setValue(source.getValue().value); // Set hidden value
 
-            document.querySelector("#label-field177581511").appendChild(newChild);
+            destination.setTypeAttribute('content', '<p>State Business Registration Look up</p><a href="'+ source.getValue().value + '" target="_blank" style="color: red;">' + source.getValue().value + '</div>');
+        }
+        return Promise.resolve(event);
         }
     });
-    
-    observer.observe(document.querySelector('#field176492707-mui'), { attributes: true, attributeFilter: ['value'] });
 </script>
 
 <script>
-    const secondobserver = new MutationObserver(() => {
-        if (document.querySelector('#field177486223-mui')) {
-            var stateDropdown = document.querySelector('#field177486223-mui');
-            var nextField = document.querySelector('#field177486271');
-            
-            var selectedState = stateDropdown.value;
-            var selectedURL = document.querySelector('#field177486223').value;
+    var form = window.fsApi().getForm(5990093);
+    form.registerFormEventListener({
+        type: 'change',
+        onFormEvent: function (event) {
+        if (event.data.fieldId === '177486223') {
+            const source = form.getField('177486223');
+            const destination = form.getField('177625471');
 
-            nextField.value = selectedURL;
-            
-            document.querySelector("#label-field177625471 a").remove();
-            const newChild = document.createElement('a');  
-            newChild.href = selectedURL;
-            newChild.textContent = selectedURL;
-            newChild.target = "_blank";
-            newChild.style = "color: red;";
+            form.getField(177486271).setValue(source.getValue().value); // Set hidden value
 
-            document.querySelector("#label-field177625471").appendChild(newChild);
+            destination.setTypeAttribute('content', '<p>State Business Registration Look up</p><a href="'+ source.getValue().value + '" target="_blank" style="color: red;">' + source.getValue().value + '</div>');
+        }
+        return Promise.resolve(event);
         }
     });
-    
-    secondobserver.observe(document.querySelector('#field177486223-mui'), { attributes: true, attributeFilter: ['value'] });
 </script>
 
 <script>
-    const thirdobserver = new MutationObserver(() => {
-        if (document.querySelector('#field177625538-mui')) {
-            var stateDropdown = document.querySelector('#field177625538-mui');
-            var nextField = document.querySelector('#field177625540');
-            
-            var selectedState = stateDropdown.value;
-            var selectedURL = document.querySelector('#field177625538').value;
+    var form = window.fsApi().getForm(5990093);
+    form.registerFormEventListener({
+        type: 'change',
+        onFormEvent: function (event) {
+        if (event.data.fieldId === '177625538') {
+            const source = form.getField('177625538');
+            const destination = form.getField('177625541');
 
-            nextField.value = selectedURL;
-            
-            document.querySelector("#label-field177625541 a").remove();
-            const newChild = document.createElement('a');  
-            newChild.href = selectedURL;
-            newChild.textContent = selectedURL;
-            newChild.target = "_blank";
-            newChild.style = "color: red;";
+            form.getField(177625540).setValue(source.getValue().value); // Set hidden value
 
-            document.querySelector("#label-field177625541").appendChild(newChild);
+            destination.setTypeAttribute('content', '<p>State Business Registration Look up</p><a href="'+ source.getValue().value + '" target="_blank" style="color: red;">' + source.getValue().value + '</div>');
+        }
+        return Promise.resolve(event);
         }
     });
-    
-    thirdobserver.observe(document.querySelector('#field177625538-mui'), { attributes: true, attributeFilter: ['value'] });
 </script>
