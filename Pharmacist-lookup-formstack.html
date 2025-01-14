@@ -1,13 +1,14 @@
 <script>
     var form = window.fsApi().getForm(5990093);
+    
     form.registerFormEventListener({
         type: 'change',
         onFormEvent: function (event) {
-            if (event.data.fieldId === '177112055') {
+            if (event.data.fieldId === '177112055') { // State Dropdown
                 console.log("State Dropdown Changed");
                 const stateDropdown = form.getField('177112055');
-                const dynamicSelect1 = document.querySelector("#label-field175918209 fieldset"); // Pharmacy Name 
-
+                const dynamicSelect1 = document.querySelector("#label-field175918209 fieldset"); // Pharmacy Name
+                
                 const selectedState = stateDropdown.getValue().value;
 
                 if (selectedState) {
@@ -16,255 +17,98 @@
                         .then(data => {
                             // Populate the first column values into the dropdown
                             populateSelectOptions(dynamicSelect1, data.map(row => row[0]));
-
-                            // form.getField(175918209).setValue(
-                            //     { 
-                            //         value: 'Alto Pharmacy', 
-                            //         value: 'AcariaHealth, Inc' 
-                            //     }
-                            // );
-
                         })
                         .catch(error => console.error('Error fetching state data:', error));
                 }
             }
 
-            if (event.data.fieldId === "175918209") {
-                
-            }
-            // Trigger when an option is selected in the dynamic select
-            return Promise.resolve(event);
+            return Promise.resolve(event); // Ensure the form event resolves
         }
     });
 
-    document.querySelector("#label-field175918209").addEventListener("click", function(event) {
+    // Attach a click listener to the pharmacy names fieldset
+    document.querySelector("#label-field175918209").addEventListener("click", function () {
         console.log("Pharmacy Names Changed");
+
         const stateDropdown = form.getField('177112055');
-        const dynamicSelect1 = form.getField('175918209'); // Pharmacy Name 
-        // const dynamicPharmacistName1 = document.querySelector("#label-field175918216 textarea"); // Pharmacist Name
-        // const dynamicPharmacistLicenseNumber1 = document.querySelector("#label-field177115527 textarea"); // Pharmacist License Number
-        // const dynamicPharmacistLicenseExpiration1 = document.querySelector("#label-field175918218 textarea"); // Pharmacist License Expiration
-    
-        // const dynamicPharmacyLicenseNumber1 = document.querySelector("#label-field175918213 textarea"); // Pharmacy License Numbers
-        // const dynamicPharmacyLicenseExpiration1 = document.querySelector("#label-field175918214 textarea"); // Pharmacy License Expiration
-        // const dynamicPharmacyWebsiteLinks1 = document.querySelector("#label-field177115035 textarea"); // Pharmacy Website Links
-        
-        var dynamicPharmacyName1value = "";
-        const dynamicPharmacistName1 = form.getField("175918216"); // Pharmacist Name
-        var dynamicPharmacistName1value;
-        const dynamicPharmacistLicenseNumber1 = form.getField("177115527"); // Pharmacist License Number
-        var dynamicPharmacistLicenseNumber1value;
-        const dynamicPharmacistLicenseExpiration1 = form.getField("175918218"); // Pharmacist License Expiration
-        var dynamicPharmacistLicenseExpiration1value;
-
-        const dynamicPharmacyLicenseNumber1 = form.getField("175918213"); // Pharmacy License Numbers
-        var dynamicPharmacyLicenseNumber1value;
-        const dynamicPharmacyLicenseExpiration1 = form.getField("175918214"); // Pharmacy License Expiration
-        var dynamicPharmacyLicenseExpiration1value;
-        const dynamicPharmacyWebsiteLinks1 = form.getField("177115035"); // Pharmacy Website Links
-        var dynamicPharmacyWebsiteLinks1value;
-
-
         const selectedState = stateDropdown.getValue().value;
-        const selectedValues = getSelectedValues(dynamicSelect1);
+        const selectedValues = getSelectedValues();
 
         if (selectedValues.length > 0) {
-
             console.log(selectedValues.length);
-            // Fetch state data again to find the corresponding row for the selected options
+
+            // Fetch state data for pharmacists
             fetch(`https://script.google.com/macros/s/AKfycbzQALaWNph7Che8NCdh3a9fWbZ6npNc_761j2c85KJrVr5RuOmrBiwTgZ5jbgsgtB-7Ug/exec?state=${selectedState}`)
                 .then(response => response.json())
                 .then(data => {
-                    // Clear the textareas first
-                    dynamicPharmacistName1.setValue("");
-                    dynamicPharmacistName1.setTypeAttribute("disabled", true);
-                    dynamicPharmacistName1value = "";
-                    dynamicPharmacistLicenseNumber1.setValue("");
-                    dynamicPharmacistLicenseNumber1.setTypeAttribute("disabled", true);
-                    dynamicPharmacistLicenseNumber1value = "";
-                    dynamicPharmacistLicenseExpiration1.setValue("");
-                    dynamicPharmacistLicenseExpiration1.setTypeAttribute("disabled", true);
-                    dynamicPharmacistLicenseExpiration1value = "";
-
-                    // Iterate over selected values
-                    document.querySelectorAll("#label-field175918209 fieldset input").forEach(function (index, input) {
-                        if (input.checked) {
-                            console.log(input.value);
-                            dynamicPharmacyName1value.push({ index: input.value });
-                            const selectedRow = data.find(row => row[0] === input.value);
-
-                            if (selectedRow) {
-                                if (selectedRow[1]){
-                                    dynamicPharmacistName1value += `${selectedRow[1]}\n`; // Append with a newline
-                                }
-                                else{
-                                    dynamicPharmacistName1value += `N/A\n`; // Append with a newline
-                                }
-                                if (selectedRow[2]){
-                                    dynamicPharmacistLicenseNumber1value += `${selectedRow[2]}\n`; // Append with a newline
-                                }
-                                else{
-                                    dynamicPharmacistLicenseNumber1value += `N/A\n`; // Append with a newline
-                                }
-                                if (selectedRow[3]){
-                                    dynamicPharmacistLicenseExpiration1value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
-                                }
-                                else{
-                                    dynamicPharmacistLicenseExpiration1value += `N/A\n`; // Append with a newline
-                                }
-                            }
-
-                        }
-                        else{
-                            dynamicPharmacyName1value.push({ index: null });
-                        }
-                    });
-
-                    // Trim trailing newlines
-                    console.log("PharmacyNames:", dynamicPharmacyName1value);
-                    dynamicSelect1.setValue(dynamicPharmacyName1value);
-                    dynamicPharmacistName1.setValue(dynamicPharmacistName1value.trim());
-                    dynamicPharmacistLicenseNumber1.setValue(dynamicPharmacistLicenseNumber1value.trim());
-                    dynamicPharmacistLicenseExpiration1.setValue(dynamicPharmacistLicenseExpiration1value.trim());
+                    populateDynamicFields(selectedValues, data, [
+                        form.getField("175918216"), // Pharmacist Name
+                        form.getField("177115527"), // Pharmacist License Number
+                        form.getField("175918218")  // Pharmacist License Expiration
+                    ]);
                 })
-                .catch(error => console.error('Error fetching row data:', error));
-            
-            fetch(`https://script.google.com/macros/s/AKfycbxb2u3W5O1PUVT67FqPzLq2wetdhdbPXtZtAl_SyX9-sGeFSGy_RP-jPHQ93sDbx5pz/exec?state=${selectedState}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Clear the textareas first
-                    dynamicPharmacyLicenseNumber1.value = "";
-                    dynamicPharmacyLicenseNumber1.setTypeAttribute("disabled", true);
-                    dynamicPharmacyLicenseNumber1value = "";
-                    dynamicPharmacyLicenseExpiration1.value = "";
-                    dynamicPharmacyLicenseExpiration1.setTypeAttribute("disabled", true);
-                    dynamicPharmacyLicenseExpiration1value = "";
-                    dynamicPharmacyWebsiteLinks1.value = "";
-                    dynamicPharmacyWebsiteLinks1.setTypeAttribute("disabled", true);
-                    dynamicPharmacyWebsiteLinks1value = "";
-
-                    // Iterate over selected values
-                    selectedValues.forEach(selectedValue => {
-                        const selectedRow = data.find(row => row[0] === selectedValue);
-
-                        if (selectedRow) {
-                            if (selectedRow[1]){
-                                dynamicPharmacyWebsiteLinks1value += `${selectedRow[1]}\n`; // Append with a newline
-                            }
-                            else{
-                                dynamicPharmacyWebsiteLinks1value += `N/A\n`; // Append with a newline
-                            }
-                            if (selectedRow[2]){
-                                dynamicPharmacyLicenseNumber1value += `${selectedRow[2]}\n`; // Append with a newline
-                            }
-                            else{
-                                dynamicPharmacyLicenseNumber1value += `N/A\n`; // Append with a newline
-                            }
-                            if (selectedRow[4]){
-                                dynamicPharmacyLicenseNumber1value += `${selectedRow[4]}\n`; // Append with a newline
-                            }
-                            else{
-                                dynamicPharmacyLicenseNumber1value += `N/A\n`; // Append with a newline
-                            }
-
-                            if (selectedRow[3]){
-                                dynamicPharmacyLicenseExpiration1value += `${formatDate(selectedRow[3])}\n`; // Append with a newline
-                            }
-                            else{
-                                dynamicPharmacyLicenseExpiration1value += `N/A\n`; // Append with a newline
-                            }
-                            if (selectedRow[5]){
-                                dynamicPharmacyLicenseExpiration1value += `${formatDate(selectedRow[5])}\n`; // Append with a newline
-                            }
-                            else{
-                                dynamicPharmacyLicenseExpiration1value += `N/A\n`; // Append with a newline
-                            }
-                        }
-                    });
-
-                    // Trim trailing newlines
-                    dynamicPharmacyWebsiteLinks1.setValue(dynamicPharmacyWebsiteLinks1value.trim());
-                    dynamicPharmacyLicenseNumber1.setValue(dynamicPharmacyLicenseNumber1value.trim());
-                    dynamicPharmacyLicenseExpiration1.setValue(dynamicPharmacyLicenseExpiration1value.trim());
-                })
-                .catch(error => console.error('Error fetching row data:', error));
-
+                .catch(error => console.error('Error fetching pharmacist data:', error));
         }
-    })
+    });
 
-    // Function to populate a select element with options
+    // Populate select options
     function populateSelectOptions(containerElement, optionsArray) {
-                    
         // Clear existing options
-        const fieldset = document.querySelector("#label-field175918209 fieldset");
-        const children = fieldset.children;
-        Array.from(children).forEach((child, index) => {
-            if (index !== 0 && index !== 1) {
-                child.remove();
+        const fieldset = containerElement.querySelector("fieldset");
+        while (fieldset.lastChild) fieldset.removeChild(fieldset.lastChild);
+
+        // Add new options
+        optionsArray.forEach((option, index) => {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <label for="field175918209_${index}">
+                    <input 
+                        type="checkbox" 
+                        id="field175918209_${index}" 
+                        value="${option}" 
+                        data-fs-field-id="175918209"
+                    />
+                    <span>${option}</span>
+                </label>`;
+            fieldset.appendChild(div);
+        });
+    }
+
+    // Get selected values from the checkbox field
+    function getSelectedValues() {
+        const inputs = document.querySelectorAll("#label-field175918209 fieldset input:checked");
+        return Array.from(inputs).map(input => input.value);
+    }
+
+    // Populate dynamic fields
+    function populateDynamicFields(selectedValues, data, fields) {
+        const [pharmacistName, licenseNumber, licenseExpiration] = fields;
+
+        let pharmacistNameValue = "";
+        let licenseNumberValue = "";
+        let licenseExpirationValue = "";
+
+        selectedValues.forEach(selectedValue => {
+            const row = data.find(r => r[0] === selectedValue);
+            if (row) {
+                pharmacistNameValue += row[1] || "N/A\n";
+                licenseNumberValue += row[2] || "N/A\n";
+                licenseExpirationValue += row[3] ? formatDate(row[3]) : "N/A\n";
             }
         });
 
-        // Populate new options from the array
-        optionsArray.forEach((option, index) => {
-
-            // Create the div element
-            const divElement = document.createElement('div');
-
-            // Create the label element
-            const labelElement = document.createElement('label');
-            labelElement.setAttribute('for', `field175918209_${index+2}`);
-            labelElement.className = 'StyledOptionLabel-sc-1bymt4x-0 iZvXZw fsOptionLabel';
-
-            // Create the input element
-            const inputElement = document.createElement('input');
-            inputElement.setAttribute('label', 'Please select the pharmacy/s you do business with');
-            inputElement.required = true;
-            inputElement.name = 'field175918209[]';
-            inputElement.className = 'StyledOptionButton-sc-wqe0tc-0 FSkuJ';
-            inputElement.type = 'checkbox';
-            inputElement.id = `field175918209_${index+2}`;
-            inputElement.setAttribute('data-fs-field-id', '175918209');
-            inputElement.setAttribute('data-fs-field-name', 'checkbox');
-            inputElement.setAttribute('data-fs-field-alias', (index+1).toString());
-            inputElement.value = option;
-
-            // Create the span element
-            const spanElement = document.createElement('span');
-            spanElement.textContent = option;
-
-            // Append the input and span to the label
-            labelElement.appendChild(inputElement);
-            labelElement.appendChild(spanElement);
-
-            // Append the label to the div
-            divElement.appendChild(labelElement);
-
-            // Append the div to the container element
-            containerElement.appendChild(divElement);
-
-        });
+        pharmacistName.setValue(pharmacistNameValue.trim());
+        licenseNumber.setValue(licenseNumberValue.trim());
+        licenseExpiration.setValue(licenseExpirationValue.trim());
     }
 
-    // Function to get all selected values
-    function getSelectedValues(checkboxField) {
-        const inputs = document.querySelectorAll("#label-field175918209 fieldset input:checked");
-
-        // Map through the NodeList and get the values of the checked inputs
-        const values = Array.from(inputs).map(input => input.value);
-
-        console.log(values);
-
-        return values;
-    }
-
+    // Format date as MM/DD/YYYY
     function formatDate(dateString) {
-        const date = new Date(dateString); // Convert the string to a Date object
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Get month (0-indexed, add 1)
-        const day = date.getDate().toString().padStart(2, '0'); // Get day
-        const year = date.getFullYear(); // Get full year
-        return `${month}/${day}/${year}`; // Format as MM/DD/YYYY
+        const date = new Date(dateString);
+        return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
     }
 </script>
+
 <script>
     const observer5 = new MutationObserver(() => {
         const stateDropdown = document.querySelector('#field177679482-mui');
